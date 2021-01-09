@@ -3,31 +3,28 @@
 DROP SCHEMA IF EXISTS expense_tracker cascade;
 CREATE SCHEMA IF NOT EXISTS expense_tracker;
 
-
-CREATE IF NOT EXISTS expense_tracker.bank_account_owner (
+CREATE TABLE IF NOT EXISTS expense_tracker.bank_account_owner (
 						id_ba_own integer PRIMARY KEY,
 						owner_name varchar (50) NOT NULL,
 						owner_desc varchar (250),
 						user_login integer NOT NULL,
-						active boolean not null default 1,                        ---jak zrobić?
+						active boolean DEFAULT TRUE not null,
 						insert_date timestamp DEFAULT current_timestamp,
-						update_date timestamp DEFAULT current_timestamp 
+						update_date timestamp DEFAULT current_timestamp
 );
 
-CREATE IF NOT EXISTS expanse_tracker.bank_account_types (
+CREATE TABLE IF NOT EXISTS expense_tracker.bank_account_types (
 						id_ba_type integer PRIMARY KEY,
 						ba_type varchar(50) NOT NULL,
 						ba_desc varchar(250),
-						active varchar(1), /*typ tekstowy 1 znak (lub prawda / fałsz (boolean)), dla typu znakowego
-						wartość domyślna 1, dla prawdy fałsz ustaw prawdę, , not null*/
-						is_common_account varchar(1), /*typ tekstowy 1 znak (lub prawda / fałsz (boolean)), dla typu
-						znakowego wartość domyślna 0, dla prawdy fałsz ustaw fałsz, , not null*/
+						active boolean DEFAULT TRUE NOT NULL,
+						is_common_account boolean DEFAULT FALSE NOT NULL,
 						id_ba_own integer, 
 						insert_date timestamp DEFAULT current_timestamp,
 						update_date timestamp DEFAULT current_timestamp
 );
 
-CREATE IF NOT EXISTS expanse_tracker.transactions (
+CREATE TABLE IF NOT EXISTS expense_tracker.transactions (
 						id_transaction integer PRIMARY KEY,
 						id_trans_ba integer,
 						id_trans_cat integer,
@@ -41,67 +38,52 @@ CREATE IF NOT EXISTS expanse_tracker.transactions (
 						update_date timestamp default current_timestamp
 );
 
-CREATE IF NOT EXISTS expanse_tracker.transaction_bank_accounts (
-						id_trans_ba inerger PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS expense_tracker.transaction_bank_accounts (
+						id_trans_ba integer PRIMARY KEY,
 						id_ba_own integer,
 						id_ba_typ integer,
 						bank_account_name varchar(50) not NULL,
 						bank_account_desc varchar(250),
-						active varchar(1) --typ tekstowy 1 znak (lub prawda / fałsz (boolean)), dla typu znakowego
-						--wartość domyślna 1, dla prawdy fałsz ustaw prawdę, , not null
-						---UWAGA: nie ma tego w materiałach wideo. Przeczytaj o atrybucie DEFAULT dla
-						---kolumny https://www.postgresql.org/docs/12/ddl-default.html
+						active boolean DEFAULT TRUE NOT NULL,
 						insert_date timestamp DEFAULT current_timestamp,
 						update_date timestamp DEFAULT current_timestamp
 );
 
-CREATE IF NOT EXISTS expanse_tracker.transaction_category (
+CREATE TABLE IF NOT EXISTS expense_tracker.transaction_category (
 						id_trans_cat integer PRIMARY KEY,
 						category_name varchar(50) not NULL,
 						category_description varchar(250),
-						active varchar(1), -- 1 znak (lub prawda / fałsz (boolean)), dla typu znakowego
-						--wartość domyślna 1, dla prawdy fałsz ustaw prawdę, , not null
-						--UWAGA: nie ma tego w materiałach wideo. Przeczytaj o atrybucie DEFAULT dla
-						--kolumny https://www.postgresql.org/docs/12/ddl-default.html
+						active boolean DEFAULT TRUE NOT NULL,
 						insert_date timestamp DEFAULT current_timestamp,
 						update_date timestamp DEFAULT current_timestamp
 );
 
-CREATE IF NOT EXISTS expanse_tracker.transaction_subcategory (
+CREATE TABLE IF NOT EXISTS expense_tracker.transaction_subcategory (
 						id_trans_subcat INTEGER PRIMARY KEY,
 						id_trans_cat INTEGER,
 						subcategory_name VARCHAR(50) not NULL,
 						subcategory_description VARCHAR(250),
-						active VARCHAR(1)-- 1 znak (lub prawda / fałsz (boolean)), dla typu znakowego
-						--wartość domyślna 1, dla prawdy fałsz ustaw prawdę, , not null
-						--UWAGA: nie ma tego w materiałach wideo. Przeczytaj o atrybucie DEFAULT dla
-						--kolumny https://www.postgresql.org/docs/12/ddl-default.html
+						active boolean DEFAULT TRUE NOT NULL,
 						insert_date TIMESTAMP DEFAULT current_timestamp,
 						update_date TIMESTAMP DEFAULT current_timestamp
 );
 
-CREATE IF NOT EXISTS expanse_tracker.transaction_type (
+CREATE TABLE IF NOT EXISTS expense_tracker.transaction_type (
 						id_trans_type INTEGER PRIMARY KEY,
 						transaction_type_name VARCHAR(50) not NULL,
 						transaction_type_desc VARCHAR(250),
-						active VARCHAR(1), --typ tekstowy 1 znak (lub prawda / fałsz (boolean)), dla typu znakowego
-						--wartość domyślna 1, dla prawdy fałsz ustaw prawdę, , not null
-						--UWAGA: nie ma tego w materiałach wideo. Przeczytaj o atrybucie DEFAULT dla
-						--kolumny https://www.postgresql.org/docs/12/ddl-default.html
+						active boolean DEFAULT TRUE NOT NULL,
 						insert_date timestamp DEFAULT current_timestamp,
 						update_date timestamp DEFAULT current_timestamp
 );
 
-CREATE IF NOT EXISTS expanse_tracker.users (
+CREATE TABLE IF NOT EXISTS expense_tracker.users (
 						id_user integer PRIMARY KEY,
 						user_login varchar (25) not NULL,
 						user_name varchar(50) not NULL,
 						user_password varchar(100) not NULL,
 						password_salt varchar(100) not NULL,
-						active, typ tekstowy 1 znak (lub prawda / fałsz (boolean)), dla typu znakowego
-						wartość domyślna 1, dla prawdy fałsz ustaw prawdę, , not null
-						UWAGA: nie ma tego w materiałach wideo. Przeczytaj o atrybucie DEFAULT dla
-						kolumny https://www.postgresql.org/docs/12/ddl-default.html
+						active boolean DEFAULT TRUE NOT NULL,
 						insert_date timestamp DEFAULT current_timestamp,
 						update_date timestamp DEFAULT current_timestamp
 );
