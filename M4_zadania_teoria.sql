@@ -1,37 +1,37 @@
-/* 1. Korzystaj¹c ze sk³adni CREATE ROLE, stwórz nowego u¿ytkownika o nazwie user_training z
-mo¿liwoœci¹ zalogowania siê do bazy danych i has³em silnym :) (coœ wymyœl). */
+/* KorzystajÄ…c ze skÅ‚adni CREATE ROLE, stwÃ³rz nowego uÅ¼ytkownika o nazwie user_training z
+moÅ¼liwoÅ›ciÄ… zalogowania siÄ™ do bazy danych i hasÅ‚em silnym :) (coÅ› wymyÅ›l). */
 
 DROP ROLE IF EXISTS user_training;
 CREATE ROLE user_training WITH LOGIN PASSWORD '!s0kpw8fT5q';
 
-/* 2. Korzystaj¹c z atrybutu AUTHORIZATION dla sk³adni CREATE SCHEMA. Utwórz schemat
-training, którego w³aœcicielem bêdzie u¿ytkownik user_training. */
+/* 2. KorzystajÄ…c z atrybutu AUTHORIZATION dla skÅ‚adni CREATE SCHEMA. UtwÃ³rz schemat
+training, ktÃ³rego wÅ‚aÅ›cicielem bÄ™dzie uÅ¼ytkownik user_training. */
 
 DROP SCHEMA IF EXISTS training;
 CREATE SCHEMA training AUTHORIZATION user_training;
 
 
-/* 3. Bêd¹c zalogowany na super u¿ytkowniku postgres, spróbuj usun¹æ rolê (u¿ytkownika)
+/* 3. BÄ™dÄ…c zalogowany na super uÅ¼ytkowniku postgres, sprÃ³buj usunÄ…Ä‡ rolÄ™ (uÅ¼ytkownika)
 user_training.*/
---mo¿na usun¹æ rolê jeœli przepisze siê zale¿ne od niej obiekty
+--moÅ¼na usunÄ…Ä‡ rolÄ™ jeÅ›li przepisze siÄ™ zaleÅ¼ne od niej obiekty
 
 REASSIGN OWNED BY user_training TO postgres; 
 DROP OWNED BY user_training; 
 DROP ROLE user_training;
 
-/* 4. Przeka¿ w³asnoœæ nad utworzonym dla / przez u¿ytkownika user_training obiektami na role
-postgres. Nastêpnie usuñ role user_training.*/
+/* 4. PrzekaÅ¼ wÅ‚asnoÅ›Ä‡ nad utworzonym dla / przez uÅ¼ytkownika user_training obiektami na role
+postgres. NastÄ™pnie usuÅ„ role user_training.*/
 
 REASSIGN OWNED BY user_training TO postgres;
 DROP OWNED BY user_training;
 DROP ROLE user_training;
 
-/* 5. Utwórz now¹ rolê reporting_ro, która bêdzie grup¹ dostêpów, dla u¿ytkowników warstwy
-analitycznej o nastêpuj¹cych przywilejach.
-? Dostêp do bazy danych postgres
-? Dostêp do schematu training
-? Dostêp do tworzenia obiektów w schemacie training
-? Dostêp do wszystkich uprawnieñ dla wszystkich tabel w schemacie training */
+/* 5. UtwÃ³rz nowÄ… rolÄ™ reporting_ro, ktÃ³ra bÄ™dzie grupÄ… dostÄ™pÃ³w, dla uÅ¼ytkownikÃ³w warstwy
+analitycznej o nastÄ™pujÄ…cych przywilejach.
+? DostÄ™p do bazy danych postgres
+? DostÄ™p do schematu training
+? DostÄ™p do tworzenia obiektÃ³w w schemacie training
+? DostÄ™p do wszystkich uprawnieÅ„ dla wszystkich tabel w schemacie training */
 
 
 CREATE ROLE reporting_ro;
@@ -39,14 +39,14 @@ GRANT CONNECT ON DATABASE postgres TO reporting_ro;
 GRANT USAGE, CREATE ON SCHEMA training TO reporting_ro;
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA training TO reporting_ro;
 
-/* 6. Utwórz nowego u¿ytkownika reporting_user z mo¿liwoœci¹ logowania siê do bazy danych i
-haœle silnym :) (coœ wymyœl). Przypisz temu u¿ytkownikowi role reporting ro; */
+/* 6. UtwÃ³rz nowego uÅ¼ytkownika reporting_user z moÅ¼liwoÅ›ciÄ… logowania siÄ™ do bazy danych i
+haÅ›le silnym :) (coÅ› wymyÅ›l). Przypisz temu uÅ¼ytkownikowi role reporting ro; */
 
 DROP ROLE IF EXISTS reporting_user;
 CREATE ROLE reporting_user WITH LOGIN PASSWORD 'tA2p087frY$*';
 GRANT reporting_ro TO reporting_user;
 
-/* 7. Bêd¹c zalogowany na u¿ytkownika reporting_user, spróbuj utworzyæ now¹ tabele (dowoln¹)
+/* 7. BÄ™dÄ…c zalogowany na uÅ¼ytkownika reporting_user, sprÃ³buj utworzyÄ‡ nowÄ… tabele (dowolnÄ…)
 w schemacie training. */
 
 --ok
@@ -56,21 +56,21 @@ CREATE TABLE training.test (
 )
 ;
 
-/* 8. Zabierz uprawnienia roli reporting_ro do tworzenia obiektów w schemacie training; */
+/* 8. Zabierz uprawnienia roli reporting_ro do tworzenia obiektÃ³w w schemacie training; */
 
 REVOKE CREATE ON SCHEMA training FROM reporting_ro;
 
-/* 9. Zaloguj siê ponownie na u¿ytkownika reporting_user, sprawdŸ czy mo¿esz utworzyæ now¹
-tabelê w schemacie training oraz czy mo¿esz tak¹ tabelê utworzyæ w schemacie public.*/
+/* 9. Zaloguj siÄ™ ponownie na uÅ¼ytkownika reporting_user, sprawdÅº czy moÅ¼esz utworzyÄ‡ nowÄ…
+tabelÄ™ w schemacie training oraz czy moÅ¼esz takÄ… tabelÄ™ utworzyÄ‡ w schemacie public.*/
 
----W poprzednim kroku zosta³y odebrane uprawnienia w obrêbie schematu training, wiêc nie da siê utworzyæ tabeli w tym schemacie
-CREATE TABLE training.tabela1 (
+---W poprzednim kroku zostaÅ‚y odebrane uprawnienia w obrÄ™bie schematu training, wiÄ™c nie da siÄ™ utworzyÄ‡ tabeli w tym schemacie
+CREATE TABLE training.test1 (
 	id INTEGER
 )
 ;
 
---W schemacie public mo¿na utworzyæ tabelê
-CREATE TABLE public.tabela2 (
+--W schemacie public moÅ¼na utworzyÄ‡ tabelÄ™
+CREATE TABLE public.test2 (
 	id INTEGER
 )
 ;
