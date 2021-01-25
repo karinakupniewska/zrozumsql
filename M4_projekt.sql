@@ -168,7 +168,7 @@ CREATE TABLE IF NOT EXISTS expense_tracker.transactions(
 	 id_user integer,
 	 transaction_date date DEFAULT current_date,
 	 transaction_value numeric(9,2),
-	 TRANSACTION_description text,
+	 transaction_description text,
 	 insert_date timestamp DEFAULT current_timestamp,
 	 update_date timestamp DEFAULT current_timestamp,
 	 CONSTRAINT transaction_bank_accounts_fk FOREIGN KEY (id_trans_ba) REFERENCES expense_tracker.transaction_bank_accounts (id_trans_ba),
