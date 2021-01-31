@@ -37,7 +37,7 @@ innej nazwy)
 ? Dodaj wszystkie przywileje do schematu expense_tracker */
 
 GRANT CONNECT ON DATABASE postgres TO expense_tracker_group;
-GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA expense_tracker TO expense_tracker_group;
+GRANT ALL PRIVILEGES ON SCHEMA expense_tracker TO expense_tracker_group;
 
 /*
 7. Dodaj rolę expense_tracker_group użytkownikowi expense_tracker_user. */
